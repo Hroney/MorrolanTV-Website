@@ -15,15 +15,15 @@ export class Home extends React.Component {
       videoId: null,
       lastChecked: 0,
       channelId: 'UCJRsrXVPx3awXJX6WkFz4Dw',
-      apiKey: 'AIzaSyAlyu7GhxWxIs6HHS996nteWaIPJP6jYGI',
+      apiKey: 'xxxxxx', //Insert API key
     };
     this.checkInterval = null;
   }
 
   componentDidMount() {
     const streamCheckFunc = () => checkIfStreamIsLive(
-      this.state.channelId, // Replace with the YouTube Channel ID
-      this.state.apiKey, // Replace with your YouTube API key
+      this.state.channelId,
+      this.state.apiKey,
       this.state.lastChecked,
       this.setState.bind(this)
     );
@@ -37,7 +37,7 @@ export class Home extends React.Component {
   }
 
   render() {
-    const { isLive, videoId } = this.state;
+    const { isLive, videoId, channelId } = this.state;
 
     console.log("isLive, videoId", isLive, videoId)
 
@@ -47,7 +47,7 @@ export class Home extends React.Component {
         {isLive &&
           <div id="home-content-wrapper">
             <TwitchChat />
-            <LiveVideo channelId={"UCJRsrXVPx3awXJX6WkFz4Dw"} />
+            <LiveVideo channelId={channelId} />
             <YoutubeChat isLive={isLive} videoId={videoId} />
           </div>
         }

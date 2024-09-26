@@ -8,7 +8,6 @@ import "./navbar.css"
 export const NavBar = () => (
   <nav
     className='nav-bar component'
-  // style={{ backgroundImage: `url(${bar})` }}
   >
     <Link to="/"><img src={logo} className='logo-image'></img></Link>
     <ul className='nav-list-left'>
