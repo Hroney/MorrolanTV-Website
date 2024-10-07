@@ -2,58 +2,56 @@ import React from 'react';
 import { Scroller } from './promo/scroller';
 import { TwitchChat } from './twitch-chat/twitch-chat';
 import { YoutubeChat } from './youtube-chat/youtube-chat';
-import { OfflineVideo } from './offline-video/offline-video'
+import { OfflineVideo } from './offline-video/offline-video';
 import { LiveVideo } from './live-video/live-video';
-import { checkIfStreamIsLive, setupStreamCheckInterval, clearStreamCheckInterval } from './home-helpers';
+import { fetchStreamStatus } from './home-helpers';
 import './home.css';
 
 export class Home extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       isLive: false,
       videoId: null,
-      lastChecked: 0,
-      channelId: 'UCJRsrXVPx3awXJX6WkFz4Dw',
-      apiKey: 'xxxxxx', //Insert API key
+      channelId: 'UCMnULQ6F6kLDAHxofDWIbrw',
+      loading: true,
     };
-    this.checkInterval = null;
   }
 
-  componentDidMount() {
-    const streamCheckFunc = () => checkIfStreamIsLive(
-      this.state.channelId,
-      this.state.apiKey,
-      this.state.lastChecked,
-      this.setState.bind(this)
-    );
-
-    streamCheckFunc();
-    this.checkInterval = setupStreamCheckInterval(streamCheckFunc);
-  }
-
-  componentWillUnmount() {
-    clearStreamCheckInterval(this.checkInterval);
+  async componentDidMount() {
+    try {
+      const streamStatus = await fetchStreamStatus(this.state.channelId);
+      this.setState({
+        isLive: streamStatus.isLive,
+        videoId: streamStatus.videoId,
+        loading: false,
+      });
+    } catch (error) {
+      console.error('Error fetching stream status:', error);
+      this.setState({ loading: false });
+    }
   }
 
   render() {
-    const { isLive, videoId, channelId } = this.state;
+    const { isLive, videoId, channelId, loading } = this.state;
 
-    console.log("isLive, videoId", isLive, videoId)
+    if (loading) {
+      return <div>Loading...</div>;
+    }
 
     return (
       <section id="home-section-wrapper">
         <Scroller />
-        {isLive &&
+        {isLive ? (
           <div id="home-content-wrapper">
             <TwitchChat />
             <LiveVideo channelId={channelId} />
             <YoutubeChat isLive={isLive} videoId={videoId} />
           </div>
-        }
-        {!isLive &&
+        ) : (
           <OfflineVideo videoId={videoId} />
-        }
+        )}
       </section>
     );
   }

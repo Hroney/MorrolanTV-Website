@@ -25,3 +25,7 @@ section h1 {
     max-height: calc(100vh - 5rem);
     min-height: calc(100vh - 5rem);
 }
+
+#video-live {
+    flex-grow: 3;
+}

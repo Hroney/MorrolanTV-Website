@@ -8,11 +8,12 @@ export class OfflineVideo extends React.Component {
             <iframe
                 width="100%"
                 height="100%"
-                src={`https://www.youtube.com/embed/${videoId}`}>
+                frameBorder="0"
+                allowFullScreen
+                src={`https://www.youtube.com/embed/${videoId}`}
+            >
             </iframe>
         )
     }
 
 }
-
-

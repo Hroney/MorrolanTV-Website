@@ -6,13 +6,10 @@ export class LiveVideo extends React.Component {
 
         return (
             <iframe
-                width="100%"
-                height="100%"
+                id="video-live"
                 src={`https://www.youtube.com/embed/live_stream?channel=${channelId}`}>
             </iframe>
         )
     }
 
 }
-
-
