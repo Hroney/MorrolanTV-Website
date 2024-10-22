@@ -68,7 +68,8 @@
 
 .nav-menu-socials,
 .nav-menu-community,
-.nav-menu-support {
+.nav-menu-support,
+.nav-menu-tools {
     min-height: 5rem;
     align-content: center;
     position: relative;
@@ -83,7 +84,8 @@
 
 .nav-menu-socials:hover,
 .nav-menu-community:hover,
-.nav-menu-support:hover {
+.nav-menu-support:hover,
+.nav-menu-tools:hover {
     color: #F4A261;
 }
 

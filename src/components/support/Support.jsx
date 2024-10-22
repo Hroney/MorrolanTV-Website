@@ -18,6 +18,14 @@ export class Support extends React.Component {
     <div className='support component'>
       <h1>Support Page</h1>
       <p>{this.state.content}</p>
+      <iframe
+        src="https://streamelements.com/morrolantv/tip"
+        width="100%"
+        height="600px"
+        frameBorder="0"
+        allowFullScreen
+      />
+
     </div>
   )
 }

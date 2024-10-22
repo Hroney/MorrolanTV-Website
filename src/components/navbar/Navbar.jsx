@@ -59,10 +59,16 @@ export const NavBar = () => (
         </ul>
       </li>
       <li className='nav-menu-support'>
-        <Link to="/support" className='link'>Support</Link>
+        <a
+          href='https://streamelements.com/morrolantv/tip'
+          target='_blank'
+          className='menu-links'
+        >
+          Support
+        </a>
       </li>
-      <li className='nav-menu-support'>
-        <Link to="/tools" className='link'>Tools</Link>
+      <li className='nav-menu-tools'>
+        <Link to="/tools" className='menu-links'>Tools</Link>
       </li>
     </ul>
     <ul className='nav-list'>
