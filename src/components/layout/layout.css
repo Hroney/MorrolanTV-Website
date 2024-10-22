@@ -9,6 +9,7 @@ BODY,
   padding: 0;
   height: 100vh;
   width: 100vw;
+  height: 100%;
 }
 
 body {
@@ -31,17 +32,17 @@ body {
   grid-template-rows: min-content 1fr;
 }
 
-.layout.component>.nav-bar.component {
+.layout.component > .nav-bar.component {
   grid-area: header;
 }
 
-.layout.component>MAIN {
+.layout.component > MAIN {
   grid-area: content;
 }
 
 
 
-/* 
+/*
 .scrollable {
     display: flex;
     flex-direction: column;

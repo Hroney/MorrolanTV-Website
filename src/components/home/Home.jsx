@@ -14,7 +14,7 @@ export class Home extends React.Component {
     this.state = {
       isLive: false,
       videoId: null,
-      channelId: 'UCMnULQ6F6kLDAHxofDWIbrw',
+      channelId: 'UC130oC2JmKYmdPQhJ2tVLog',
       loading: true,
     };
   }
@@ -42,7 +42,7 @@ export class Home extends React.Component {
 
     return (
       <section id="home-section-wrapper">
-        <Scroller />
+        {/* <Scroller /> */}
         {isLive ? (
           <div id="home-content-wrapper">
             <TwitchChat />
