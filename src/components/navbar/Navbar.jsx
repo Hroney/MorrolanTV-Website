@@ -61,6 +61,9 @@ export const NavBar = () => (
       <li className='nav-menu-support'>
         <Link to="/support" className='link'>Support</Link>
       </li>
+      <li className='nav-menu-support'>
+        <Link to="/tools" className='link'>Tools</Link>
+      </li>
     </ul>
     <ul className='nav-list'>
       <li className='nav-item'>
