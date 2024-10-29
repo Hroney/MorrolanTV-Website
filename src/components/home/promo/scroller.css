@@ -1,7 +1,23 @@
 #promo-div {
     max-height: 5rem;
-    overflow-y: hidden;
-    min-width: 100%;
-    width: 100%;
-    margin: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100vw;
+    background-color: #282c34;
+    color: white;
+}
+
+#promo-div-text {
+    animation: scroll 10s linear infinite;
+    padding-left: 100%;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-250vw);
+    }
 }

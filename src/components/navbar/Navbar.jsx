@@ -31,6 +31,14 @@ export const NavBar = () => (
     <ul className='nav-list'>
       <li className='nav-menu-socials'>
         <a
+          href='https://www.youtube.com/c/MorrolanTV'
+          target='_blank'
+        >
+          <img src={youtubeicon} className='icon' id="youtube"></img>
+        </a>
+      </li>
+      <li className='nav-menu-socials'>
+        <a
           href='https://www.twitch.tv/morrolantv'
           target='_blank'
 
@@ -44,14 +52,6 @@ export const NavBar = () => (
           target='_blank'
         >
           <img src={xicon} className='icon' id="twitter"></img>
-        </a>
-      </li>
-      <li className='nav-menu-socials'>
-        <a
-          href='https://www.youtube.com/c/MorrolanTV'
-          target='_blank'
-        >
-          <img src={youtubeicon} className='icon' id="youtube"></img>
         </a>
       </li>
       <li className='nav-menu-socials'>

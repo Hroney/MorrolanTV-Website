@@ -55,10 +55,10 @@ export class Home extends React.Component {
               <OfflineVideo videoId={videoId} />
             </div>
             <div className="home-content-section" id="color">
-              Hello
+              Youtube Content (other videos)
             </div>
             <div className="home-content-section">
-              Hello 2
+              About me content
             </div>
           </div>
         )}
