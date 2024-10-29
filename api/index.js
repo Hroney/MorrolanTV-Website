@@ -18,6 +18,7 @@ const CACHE_DURATION = 1 * 60 * 1000; // 15 minutes
 
 // Function to fetch the live status or most recent video
 const fetchStreamStatus = async (channelId, apiKey) => {
+  console.log("cache ", cache)
   try {
     // Step 1: Check the most recent video IDs
     const activitiesUrl = `https://youtube.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=${channelId}&maxResults=3&key=${apiKey}`;
@@ -59,6 +60,8 @@ const fetchStreamStatus = async (channelId, apiKey) => {
 
 // API route for stream status
 app.get('/api/stream-status', async (req, res) => {
+
+  console.log("I'm getting here?")
   const { channelId } = req.query;
   // eslint-disable-next-line no-undef
   const apiKey = process.env.YOUTUBE_API_KEY;
