@@ -21,8 +21,23 @@ section h1 {
 }
 
 #home-content-wrapper::-webkit-scrollbar {
-    display: none;
+    width: .5rem;
+    background-color: transparent;
+
 }
+
+#home-content-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#home-content-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+#home-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 
 #home-content-wrapper-live {
     width: 100%;
@@ -41,7 +56,7 @@ section h1 {
     flex-grow: 3;
 }
 
-#home-content-section {
+.home-content-section {
     height: 100%;
     scroll-snap-align: start;
     display: flex;

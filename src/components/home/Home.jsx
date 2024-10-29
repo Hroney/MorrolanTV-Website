@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scroller } from './promo/scroller';
+// import { Scroller } from './promo/scroller';
 import { TwitchChat } from './twitch-chat/twitch-chat';
 import { YoutubeChat } from './youtube-chat/youtube-chat';
 import { OfflineVideo } from './offline-video/offline-video';
@@ -51,11 +51,14 @@ export class Home extends React.Component {
           </div>
         ) : (
           <div id="home-content-wrapper">
-            <div id="home-content-section">
+            <div className="home-content-section">
               <OfflineVideo videoId={videoId} />
             </div>
-            <div id="home-content-section">
+            <div className="home-content-section" id="color">
               Hello
+            </div>
+            <div className="home-content-section">
+              Hello 2
             </div>
           </div>
         )}
