@@ -1,5 +1,6 @@
 // home-helpers.jsx
 const fetchStreamStatus = async (channelId) => {
+    console.log("channelId", channelId)
     try {
         const response = await fetch(`/api/stream-status?channelId=${channelId}`);
         if (!response.ok) {

@@ -61,7 +61,6 @@ const fetchStreamStatus = async (channelId, apiKey) => {
 // API route for stream status
 app.get('/api/stream-status', async (req, res) => {
 
-  console.log("I'm getting here?")
   const { channelId } = req.query;
   // eslint-disable-next-line no-undef
   const apiKey = process.env.YOUTUBE_API_KEY;
