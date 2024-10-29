@@ -2,6 +2,7 @@ import React from 'react';
 
 export class OfflineVideo extends React.Component {
     render() {
+        // eslint-disable-next-line react/prop-types
         const { videoId } = this.props;
 
         return (
