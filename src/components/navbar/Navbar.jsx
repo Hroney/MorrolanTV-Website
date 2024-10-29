@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/morro-main3-800x800.png"
-import bar from "../../assets/Bar.png"
-import youtube from "../../assets/youtube.png"
+import discordicon from "../../assets/discord-white-icon.webp"
+import twitchicon from "../../assets/twitch-tv.png"
+import youtubeicon from "../../assets/youtube.png"
+import xicon from "../../assets/x-social-media-white-icon.png"
 import "./navbar.css"
 
 export const NavBar = () => (
@@ -11,52 +14,8 @@ export const NavBar = () => (
   >
     <Link to="/"><img src={logo} className='logo-image'></img></Link>
     <ul className='nav-list-left'>
-      <li className='nav-menu-socials'>
-        Socials
-        <ul className='nav-menu-socials-sub-menu'>
-          <li>
-            <a
-              href='https://www.twitch.tv/morrolantv'
-              target='_blank'
-              className='menu-links'
-            >
-              Twitch
-            </a>
-          </li>
-          <li>
-            <a
-              href='https://twitter.com/morrolantv'
-              target='_blank'
-              className='menu-links'
-            >
-              Twitter
-            </a>
-          </li>
-          <li>
-            <a
-              href='https://www.youtube.com/c/MorrolanTV'
-              target='_blank'
-              className='menu-links'
-            >
-              Youtube
-            </a>
-          </li>
-        </ul>
-      </li>
-
-      <li className='nav-menu-community'>
-        Community
-        <ul className='nav-menu-community-sub-menu'>
-          <li>
-            <a
-              href='https://discord.com/invite/morrolantv'
-              target='_blank'
-              className='menu-links'
-            >
-              Discord
-            </a>
-          </li>
-        </ul>
+      <li className='nav-menu-tools'>
+        <Link to="/tools" className='menu-links'>Tools</Link>
       </li>
       <li className='nav-menu-support'>
         <a
@@ -64,18 +23,51 @@ export const NavBar = () => (
           target='_blank'
           className='menu-links'
         >
-          Support
+          Donate 🗗
         </a>
       </li>
-      <li className='nav-menu-tools'>
-        <Link to="/tools" className='menu-links'>Tools</Link>
+
+    </ul >
+    <ul className='nav-list'>
+      <li className='nav-menu-socials'>
+        <a
+          href='https://www.twitch.tv/morrolantv'
+          target='_blank'
+
+        >
+          <img src={twitchicon} className='icon' id="twitch"></img>
+        </a>
+      </li>
+      <li className='nav-menu-socials'>
+        <a
+          href='https://twitter.com/morrolantv'
+          target='_blank'
+        >
+          <img src={xicon} className='icon' id="twitter"></img>
+        </a>
+      </li>
+      <li className='nav-menu-socials'>
+        <a
+          href='https://www.youtube.com/c/MorrolanTV'
+          target='_blank'
+        >
+          <img src={youtubeicon} className='icon' id="youtube"></img>
+        </a>
+      </li>
+      <li className='nav-menu-socials'>
+        <a
+          href='https://discord.com/invite/morrolantv'
+          target='_blank'
+        >
+          <img src={discordicon} className='icon' id="discord"></img>
+        </a>
       </li>
     </ul>
-    <ul className='nav-list'>
+    {/* <ul className='nav-list'>
       <li className='nav-item'>
         <Link to="/about" className='link'>About</Link>
         <Link to="/stuff" className='link'>Stuff</Link>
       </li>
-    </ul>
-  </nav>
+    </ul> */}
+  </nav >
 )

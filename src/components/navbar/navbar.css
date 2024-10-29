@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.logo-image:hover {
+    filter: drop-shadow(0px 0px 3px red);
+}
+
 .nav-list {
     list-style: none;
     display: flex;
@@ -18,8 +22,8 @@
     color: white;
     width: 100%;
     height: 5rem;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
     border-bottom: 1px solid #B22222;
     /* background-size: 100% 100%; */
 }
@@ -36,7 +40,6 @@
 }
 
 
-
 .nav-list-left {
     list-style: none;
     display: flex;
@@ -48,24 +51,6 @@
     gap: 2rem;
 }
 
-.nav-menu-socials-sub-menu,
-.nav-menu-community-sub-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #121212;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 1.25rem;
-    user-select: none;
-    font-style: normal;
-    text-align: center;
-    border: solid 1px red;
-    border-top: none;
-}
-
 .nav-menu-socials,
 .nav-menu-community,
 .nav-menu-support,
@@ -73,7 +58,7 @@
     min-height: 5rem;
     align-content: center;
     position: relative;
-    font-size: 2rem;
+    font-size: min(2rem, 3vw);
     font-weight: bold;
     user-select: none;
     cursor: pointer;
@@ -82,25 +67,13 @@
     font-style: italic;
 }
 
-.nav-menu-socials:hover,
-.nav-menu-community:hover,
-.nav-menu-support:hover,
-.nav-menu-tools:hover {
-    color: #F4A261;
+.nav-menu-socials {
+    overflow: hidden;
+    font-size: medium;
 }
 
-
-.nav-menu-socials:hover > .nav-menu-socials-sub-menu,
-.nav-menu-socials-sub-menu:hover,
-.nav-menu-community:hover > .nav-menu-community-sub-menu,
-.nav-menu-community-sub-menu:hover {
-    display: flex;
-    flex-direction: column;
-}
-
-.nav-menu-community:hover > .nav-menu-community-sub-menu,
-.nav-menu-community-sub-menu:hover {
-    margin-left: 2rem;
+.nav-list:last-child {
+    padding-right: 1vw;
 }
 
 .menu-links:link,
@@ -110,11 +83,40 @@
 }
 
 .menu-links:hover {
-    color: #F4A261
+    filter: drop-shadow(0px 0px 2px red);
 }
 
+.icon {
+    width: min(3rem, 4vw);
+    object-fit: cover;
+}
 
-.nav-menu-socials-sub-menu li,
-.nav-menu-community-sub-menu li {
-    padding: 0.5rem 1rem;
+.icon:hover {
+    filter: drop-shadow(0px 0px 2px red);
+    animation: shake 0.5s;
+    animation-iteration-count: 1;
+}
+
+.icon#twitter,
+.icon#twitch {
+    scale: .55;
+}
+
+.icon#youtube,
+.icon#discord {
+    scale: .75;
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    33% {
+        transform: rotate(5deg);
+    }
+
+    66% {
+        transform: rotate(-5deg);
+    }
 }
