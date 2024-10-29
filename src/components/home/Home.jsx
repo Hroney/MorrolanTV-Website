@@ -44,13 +44,20 @@ export class Home extends React.Component {
       <section id="home-section-wrapper">
         {/* <Scroller /> */}
         {isLive ? (
-          <div id="home-content-wrapper">
+          <div id="home-content-wrapper-live">
             <TwitchChat />
             <LiveVideo channelId={channelId} />
             <YoutubeChat isLive={isLive} videoId={videoId} />
           </div>
         ) : (
-          <OfflineVideo videoId={videoId} />
+          <div id="home-content-wrapper">
+            <div id="home-content-section">
+              <OfflineVideo videoId={videoId} />
+            </div>
+            <div id="home-content-section">
+              Hello
+            </div>
+          </div>
         )}
       </section>
     );
