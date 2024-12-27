@@ -1,11 +1,14 @@
 import React from 'react';
-// import { Scroller } from './promo/scroller';
+import { Scroller } from './promo/scroller';
 import { TwitchChat } from './twitch-chat/twitch-chat';
 import { YoutubeChat } from './youtube-chat/youtube-chat';
 import { OfflineVideo } from './offline-video/offline-video';
 import { LiveVideo } from './live-video/live-video';
+import { About } from '../about/About'
 import { fetchStreamStatus } from './home-helpers';
 import './home.css';
+import { YoutubeVideos } from './youtube-videos/youtube-videos';
+import { getVideosFromCache, setVideosToCache } from '../../utils/videoCache';
 
 export class Home extends React.Component {
 
@@ -16,12 +19,27 @@ export class Home extends React.Component {
       videoId: null,
       channelId: 'UC130oC2JmKYmdPQhJ2tVLog',
       loading: true,
+      recentVideos: [],
     };
   }
 
   async componentDidMount() {
     try {
+      // First check cache for videos
+      const cachedVideos = getVideosFromCache();
+      if (cachedVideos) {
+        this.setState({ recentVideos: cachedVideos });
+      }
+
+      // Fetch stream status and potentially new videos
       const streamStatus = await fetchStreamStatus(this.state.channelId);
+
+      // If we got new videos from the API, update cache
+      if (streamStatus.recentVideos && streamStatus.recentVideos.length > 0) {
+        setVideosToCache(streamStatus.recentVideos);
+        this.setState({ recentVideos: streamStatus.recentVideos });
+      }
+
       this.setState({
         isLive: streamStatus.isLive,
         videoId: streamStatus.videoId,
@@ -55,10 +73,10 @@ export class Home extends React.Component {
               <OfflineVideo videoId={videoId} />
             </div>
             <div className="home-content-section" id="color">
-              Youtube Content (other videos)
+              <YoutubeVideos videos={this.state.recentVideos} />
             </div>
             <div className="home-content-section">
-              About me content
+              <About />
             </div>
           </div>
         )}
