@@ -79,4 +79,4 @@ export default async function handler(req, res) {
     } else {
         return res.status(500).json({ error: 'Failed to fetch stream status' });
     }
-} 
+}
