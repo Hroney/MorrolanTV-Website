@@ -5,7 +5,7 @@ export class YoutubeChat extends React.Component {
     render() {
         const { isLive, videoId } = this.props;
         console.log("videoId", videoId)
-        const vidsource = `https://www.youtube.com/live_chat?v=${videoId}&embed_domain=localhost`;
+        const vidsource = `https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${window.location.hostname}`;
         const iframe_source = (
             <iframe
                 src={vidsource}

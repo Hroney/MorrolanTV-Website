@@ -2,7 +2,11 @@
 const fetchStreamStatus = async (channelId) => {
     console.log("channelId", channelId)
     try {
-        const response = await fetch(`/api/stream-status?channelId=${channelId}`);
+        const apiUrl = process.env.NODE_ENV === 'production'
+            ? '/api/stream-status'
+            : 'http://localhost:3001/api/stream-status';
+
+        const response = await fetch(`${apiUrl}?channelId=${channelId}`);
         console.log(response)
         if (!response.ok) {
             throw new Error('Network response was not ok');
