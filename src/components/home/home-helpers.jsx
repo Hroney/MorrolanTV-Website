@@ -4,7 +4,7 @@ const fetchStreamStatus = async (channelId) => {
     try {
         const apiUrl = process.env.NODE_ENV === 'production'
             ? '/api/stream-status'
-            : 'https://morrolantv.vercel.app/api/stream-status';
+            : `https://morrolantv.vercel.app/api/stream-status?channelId=${channelId}`;
 
         const response = await fetch(`${apiUrl}?channelId=${channelId}`);
         console.log(response)
