@@ -6,8 +6,8 @@
         }
     ],
     "functions": {
-        "api/**/*.js": {
-            "runtime": "nodejs18"
+        "api/**/*": {
+            "runtime": "@vercel/node@3.0.0"
         }
     }
 }
