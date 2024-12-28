@@ -2,7 +2,6 @@ import React from 'react';
 
 export class OfflineVideo extends React.Component {
     render() {
-        // eslint-disable-next-line react/prop-types
         const { videoId } = this.props;
 
         return (
@@ -11,10 +10,11 @@ export class OfflineVideo extends React.Component {
                 height="100%"
                 frameBorder="0"
                 allowFullScreen
-                src={`https://www.youtube.com/embed/${videoId}`}
+                loading="lazy"
+                src={`https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=0&rel=0&modestbranding=1&controls=1&origin=${window.location.origin}`}
+                title="YouTube video player"
             >
             </iframe>
         )
     }
-
 }

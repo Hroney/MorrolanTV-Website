@@ -8,9 +8,10 @@ export class LiveVideo extends React.Component {
             <iframe
                 id="video-live"
                 frameBorder="0"
-                src={`https://www.youtube.com/embed/live_stream?channel=${channelId}`}>
+                loading="lazy"
+                title="YouTube live stream"
+                src={`https://www.youtube-nocookie.com/embed/live_stream?channel=${channelId}&enablejsapi=0&rel=0&modestbranding=1&controls=1&origin=${window.location.origin}`}>
             </iframe>
         )
     }
-
 }
