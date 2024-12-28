@@ -33,7 +33,7 @@ const fetchStreamStatus = async (channelId, apiKey) => {
     }
 
     try {
-        // Get uploads playlist ID (costs 1 unit)
+        // Get uploads playlist ID
         const channelUrl = `https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`;
         const channelResponse = await fetch(channelUrl);
         if (!channelResponse.ok) {
@@ -43,25 +43,57 @@ const fetchStreamStatus = async (channelId, apiKey) => {
 
         const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
 
-        // Get recent videos from uploads playlist (costs 1 unit)
-        const playlistUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
+        // Get recent videos from uploads playlist
+        const playlistUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet,status&playlistId=${uploadsPlaylistId}&maxResults=30&key=${apiKey}`;
         const playlistResponse = await fetch(playlistUrl);
         if (!playlistResponse.ok) {
             throw new Error(`Playlist API error: ${playlistResponse.status}`);
         }
         const playlistData = await playlistResponse.json();
 
-        const recentVideos = playlistData.items.map(item => ({
-            id: item.snippet.resourceId.videoId,
-            title: item.snippet.title,
-            thumbnail: item.snippet.thumbnails.medium,
-            publishedAt: item.snippet.publishedAt
-        }));
+        // Get video details to check for livestreams
+        const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId).join(',');
+        const videoUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id=${videoIds}&key=${apiKey}`;
+        const videoResponse = await fetch(videoUrl);
+        if (!videoResponse.ok) {
+            throw new Error(`Video API error: ${videoResponse.status}`);
+        }
+        const videoData = await videoResponse.json();
+
+        // Create a map of video details
+        const videoDetails = new Map(
+            videoData.items.map(item => [item.id, item])
+        );
+
+        // Get the most recent video ID (including livestreams) for the player
+        const mostRecentVideo = playlistData.items[0]?.snippet.resourceId.videoId || null;
+
+        // Filter out livestreams for the video list
+        let recentVideos = [];
+        for (const item of playlistData.items) {
+            const videoId = item.snippet.resourceId.videoId;
+            const videoDetail = videoDetails.get(videoId);
+
+            // Skip if it's a livestream
+            if (videoDetail?.liveStreamingDetails) {
+                continue;
+            }
+
+            recentVideos.push({
+                id: videoId,
+                title: item.snippet.title,
+                thumbnail: item.snippet.thumbnails.medium,
+                publishedAt: item.snippet.publishedAt
+            });
+
+            // Break once we have 10 regular videos
+            if (recentVideos.length === 10) break;
+        }
 
         // Update cache
         cache = {
             isLive: false,
-            videoId: recentVideos[0]?.id || null,
+            videoId: mostRecentVideo,
             recentVideos: recentVideos,
             lastChecked: now,
             videosLastChecked: now,
@@ -70,7 +102,7 @@ const fetchStreamStatus = async (channelId, apiKey) => {
 
         return {
             isLive: false,
-            videoId: recentVideos[0]?.id || null,
+            videoId: mostRecentVideo,
             recentVideos: recentVideos
         };
 
@@ -79,6 +111,15 @@ const fetchStreamStatus = async (channelId, apiKey) => {
         throw error;
     }
 };
+
+// Helper function to parse ISO 8601 duration to seconds
+function parseDuration(duration) {
+    const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+    const hours = (parseInt(match[1]) || 0);
+    const minutes = (parseInt(match[2]) || 0);
+    const seconds = (parseInt(match[3]) || 0);
+    return hours * 3600 + minutes * 60 + seconds;
+}
 
 // Export for Vercel
 export default async function handler(req, res) {
