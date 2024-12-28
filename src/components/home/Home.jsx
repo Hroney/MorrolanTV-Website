@@ -20,6 +20,7 @@ export class Home extends React.Component {
       channelId: 'UC130oC2JmKYmdPQhJ2tVLog',
       loading: true,
       recentVideos: [],
+      selectedVideoId: null
     };
   }
 
@@ -51,8 +52,15 @@ export class Home extends React.Component {
     }
   }
 
+  handleVideoSelect = (videoId) => {
+    console.log('handleVideoSelect called with ID:', videoId);
+    this.setState({ selectedVideoId: videoId }, () => {
+      console.log('State updated, new selectedVideoId:', this.state.selectedVideoId);
+    });
+  };
+
   render() {
-    const { isLive, videoId, channelId, loading } = this.state;
+    const { isLive, videoId, channelId, loading, selectedVideoId } = this.state;
 
     if (loading) {
       return <div>Loading...</div>;
@@ -70,10 +78,10 @@ export class Home extends React.Component {
         ) : (
           <div id="home-content-wrapper">
             <div className="home-content-section">
-              <OfflineVideo videoId={videoId} />
+              <OfflineVideo videoId={selectedVideoId || videoId} />
             </div>
             <div className="home-content-section" id="color">
-              <YoutubeVideos videos={this.state.recentVideos} />
+              <YoutubeVideos videos={this.state.recentVideos} onVideoSelect={this.handleVideoSelect} />
             </div>
             <div className="home-content-section">
               <About />

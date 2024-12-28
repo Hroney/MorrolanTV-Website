@@ -2,6 +2,20 @@ import React from 'react';
 import './youtube-videos.css';
 
 export class YoutubeVideos extends React.Component {
+    handleVideoClick = (videoId) => {
+        console.log('Video clicked with ID:', videoId);
+        this.props.onVideoSelect(videoId);
+
+        // Scroll the content wrapper to the top
+        const contentWrapper = document.getElementById('home-content-wrapper');
+        if (contentWrapper) {
+            contentWrapper.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     render() {
         const { videos } = this.props;
 
@@ -9,7 +23,6 @@ export class YoutubeVideos extends React.Component {
             return <div>No videos available</div>;
         }
 
-        // Split videos into two rows
         const topRow = videos.slice(0, 5);
         const bottomRow = videos.slice(5, 10);
 
@@ -17,12 +30,10 @@ export class YoutubeVideos extends React.Component {
             <div className="youtube-videos-container">
                 <div className="youtube-videos-row">
                     {topRow.map(video => (
-                        <a
+                        <div
                             key={video.id}
-                            href={`https://www.youtube.com/watch?v=${video.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="video-card"
+                            onClick={() => this.handleVideoClick(video.id)}
                         >
                             <img
                                 src={video.thumbnail.url}
@@ -31,17 +42,15 @@ export class YoutubeVideos extends React.Component {
                                 height={video.thumbnail.height}
                             />
                             <h3>{video.title}</h3>
-                        </a>
+                        </div>
                     ))}
                 </div>
                 <div className="youtube-videos-row">
                     {bottomRow.map(video => (
-                        <a
+                        <div
                             key={video.id}
-                            href={`https://www.youtube.com/watch?v=${video.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="video-card"
+                            onClick={() => this.handleVideoClick(video.id)}
                         >
                             <img
                                 src={video.thumbnail.url}
@@ -50,7 +59,7 @@ export class YoutubeVideos extends React.Component {
                                 height={video.thumbnail.height}
                             />
                             <h3>{video.title}</h3>
-                        </a>
+                        </div>
                     ))}
                 </div>
             </div>

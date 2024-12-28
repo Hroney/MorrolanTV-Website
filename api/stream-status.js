@@ -15,88 +15,72 @@ let cache = {
     videoId: null,
     recentVideos: [],
     lastChecked: 0,
-    videosLastChecked: 0
+    videosLastChecked: 0,
+    channelId: null
 };
 
 const fetchStreamStatus = async (channelId, apiKey) => {
+    // Check cache first
+    const now = Date.now();
+    if (cache.recentVideos.length > 0 &&
+        cache.channelId === channelId &&
+        (now - cache.videosLastChecked) < VIDEOS_CACHE_DURATION) {
+        return {
+            isLive: cache.isLive,
+            videoId: cache.videoId,
+            recentVideos: cache.recentVideos
+        };
+    }
+
     try {
-        // First, fetch the videos list
-        const searchUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&type=video&key=${apiKey}`;
-
-        const searchResponse = await fetch(searchUrl);
-        if (!searchResponse.ok) {
-            throw new Error(`YouTube search API error: ${searchResponse.status}`);
+        // Get uploads playlist ID (costs 1 unit)
+        const channelUrl = `https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`;
+        const channelResponse = await fetch(channelUrl);
+        if (!channelResponse.ok) {
+            throw new Error(`Channel API error: ${channelResponse.status}`);
         }
+        const channelData = await channelResponse.json();
 
-        const searchData = await searchResponse.json();
-        const recentVideos = searchData.items.map(item => ({
-            id: item.id.videoId,
+        const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+        // Get recent videos from uploads playlist (costs 1 unit)
+        const playlistUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
+        const playlistResponse = await fetch(playlistUrl);
+        if (!playlistResponse.ok) {
+            throw new Error(`Playlist API error: ${playlistResponse.status}`);
+        }
+        const playlistData = await playlistResponse.json();
+
+        const recentVideos = playlistData.items.map(item => ({
+            id: item.snippet.resourceId.videoId,
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails.medium,
             publishedAt: item.snippet.publishedAt
         }));
 
-        // Then check live status
-        const activitiesUrl = `https://youtube.googleapis.com/youtube/v3/activities?part=snippet%2CcontentDetails&channelId=${channelId}&maxResults=3&key=${apiKey}`;
-        const activitiesResponse = await fetch(activitiesUrl);
-        const activitiesData = await activitiesResponse.json();
-
-        let recentVideoId = null;
-        for (let i = 0; i < Math.min(activitiesData.items.length, 3); i++) {
-            const videoId = activitiesData.items[i]?.contentDetails?.upload?.videoId;
-            if (videoId) {
-                recentVideoId = videoId;
-                break;
-            }
-        }
-
-        const result = {
+        // Update cache
+        cache = {
             isLive: false,
-            videoId: recentVideoId,
+            videoId: recentVideos[0]?.id || null,
+            recentVideos: recentVideos,
+            lastChecked: now,
+            videosLastChecked: now,
+            channelId: channelId
+        };
+
+        return {
+            isLive: false,
+            videoId: recentVideos[0]?.id || null,
             recentVideos: recentVideos
         };
 
-        return result;
-
     } catch (error) {
+        console.error('Error in fetchStreamStatus:', error);
         throw error;
     }
 };
 
-// Development server setup
-if (process.env.NODE_ENV !== 'production') {
-    app.get('/api/stream-status', async (req, res) => {
-        const { channelId } = req.query;
-        const apiKey = process.env.YOUTUBE_API_KEY;
-        const now = Date.now();
-
-        if (
-            now - cache.lastChecked < CACHE_DURATION &&
-            cache.channelId === channelId
-        ) {
-            console.log('Returning cached stream status');
-            return res.json({
-                isLive: cache.isLive,
-                videoId: cache.videoId,
-            });
-        }
-
-        const streamStatus = await fetchStreamStatus(channelId, apiKey);
-        if (streamStatus) {
-            cache = { ...streamStatus, lastChecked: now, channelId };
-            return res.json(streamStatus);
-        } else {
-            return res.status(500).json({ error: 'Failed to fetch stream status' });
-        }
-    });
-
-    const PORT = 3000;
-    app.listen(PORT, () => {
-        console.log(`Development API server running on http://localhost:${PORT}`);
-    });
-}
-
-// Export the handler for Vercel
+// Export for Vercel
 export default async function handler(req, res) {
     try {
         const { channelId } = req.query;
@@ -114,4 +98,16 @@ export default async function handler(req, res) {
             message: error.message
         });
     }
+}
+
+// Development server setup
+if (process.env.NODE_ENV !== 'production') {
+    app.get('/api/stream-status', async (req, res) => {
+        await handler(req, res);
+    });
+
+    const PORT = 3000;
+    app.listen(PORT, () => {
+        console.log(`Development API server running on http://localhost:${PORT}`);
+    });
 }
